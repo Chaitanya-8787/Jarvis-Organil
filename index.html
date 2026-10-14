@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f8ff" />
+  <title>JARVIS AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="icon-button" id="historyBtn" aria-label="Conversation history" title="History">☷</button>
+      <div class="brand">
+        <span class="status-dot"></span>
+        <div><div class="brand-title">JARVIS</div><div class="brand-subtitle" id="statusText">AI assistant · Ready</div></div>
+      </div>
+      <div class="top-actions"><button class="icon-button" id="themeBtn" aria-label="Toggle theme" title="Theme">◐</button><button class="icon-button" id="settingsBtn" aria-label="Settings" title="Settings">⚙</button></div>
+    </header>
+
+    <main class="chat-area" id="chatArea">
+      <section class="welcome" id="welcomePanel">
+        <div class="welcome-orb"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8.5" stroke-dasharray="8 5.3"/></svg></div>
+        <p class="eyebrow">YOUR PERSONAL AI</p>
+        <h1>How can I help<br><span>you today?</span></h1>
+        <p class="welcome-copy">Ask a question, explore an idea, or tell me what you need.</p>
+        <div class="suggestions">
+          <button class="suggestion" data-prompt="Explain artificial intelligence in simple words."><span>✦</span><div><b>Learn something</b><small>Explain a topic simply</small></div><span class="suggestion-arrow">↗</span></button>
+          <button class="suggestion" data-prompt="Help me make a realistic study plan for today."><span>▦</span><div><b>Plan my day</b><small>Build a useful schedule</small></div><span class="suggestion-arrow">↗</span></button>
+          <button class="suggestion" data-prompt="Give me 3 beginner JavaScript project ideas."><span>⌘</span><div><b>Build something</b><small>Code, ideas and projects</small></div><span class="suggestion-arrow">↗</span></button>
+        </div>
+      </section>
+      <div class="messages" id="messages" aria-live="polite"></div>
+    </main>
+
+    <div class="composer-wrap">
+      <div class="attachment-preview" id="attachmentPreview" hidden></div>
+      <form class="composer" id="chatForm">
+        <input type="file" id="fileInput" accept="image/*,.txt,.pdf,.doc,.docx" hidden />
+        <button type="button" class="composer-tool" id="attachBtn" title="Attach file" aria-label="Attach file"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <textarea id="messageInput" rows="1" placeholder="Message JARVIS…" aria-label="Message JARVIS"></textarea>
+        <button type="button" class="composer-tool mic-button" id="voiceBtn" title="Voice input" aria-label="Voice input"><svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0z"/><path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"/></svg></button>
+        <button type="submit" class="send-button" id="sendBtn" aria-label="Send message"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+      </form>
+      <div class="composer-footer"><span id="modeLabel">Demo mode · Configure an API in Settings</span><span>JARVIS can make mistakes</span></div>
+    </div>
+  </div>
+
+  <div class="overlay" id="settingsOverlay" hidden>
+    <section class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="panel-heading"><div><p class="eyebrow">PERSONALIZE</p><h2 id="settingsTitle">Settings</h2></div><button class="icon-button close-button" id="closeSettings" aria-label="Close settings">×</button></div>
+      <label class="field-label" for="providerSelect">AI provider</label>
+      <select id="providerSelect" class="field"><option value="demo">Demo mode (no API)</option><option value="openai">OpenAI</option><option value="gemini">Google Gemini</option></select>
+      <label class="field-label" for="apiKeyInput">API key</label>
+      <div class="key-row"><input id="apiKeyInput" class="field" type="password" placeholder="Paste your API key" autocomplete="off" /><button type="button" id="showKeyBtn" class="small-button">Show</button></div>
+      <label class="field-label" for="modelInput">Model name</label>
+      <input id="modelInput" class="field" type="text" placeholder="e.g. gpt-4.1-mini or gemini-2.5-flash" />
+      <p class="hint" id="providerHint">Demo mode replies locally. Add a provider and API key to use online AI.</p>
+      <div class="setting-divider"></div>
+      <label class="field-label" for="assistantName">Assistant name</label><input id="assistantName" class="field" value="JARVIS" maxlength="24" />
+      <label class="field-label" for="systemPromptInput">Custom instructions (optional)</label><textarea id="systemPromptInput" class="field" rows="3" maxlength="600" placeholder="e.g. Reply briefly and in simple English."></textarea>
+      <label class="field-label" for="languageSelect">Speech language</label>
+      <select id="languageSelect" class="field"><option value="en-IN">English (India)</option><option value="en-US">English (US)</option><option value="hi-IN">Hindi</option><option value="te-IN">Telugu</option></select>
+      <div class="toggle-row"><div><b>Speak replies aloud</b><small>Use your browser's speech engine</small></div><label class="switch"><input id="speakToggle" type="checkbox" /><span></span></label></div>
+      <div class="toggle-row"><div><b>Save chat history</b><small>Keep conversations on this device</small></div><label class="switch"><input id="historyToggle" type="checkbox" checked /><span></span></label></div>
+      <div class="panel-actions"><button class="secondary-button" id="clearHistoryBtn">Clear history</button><button class="primary-button" id="saveSettingsBtn">Save settings</button></div>
+      <p class="security-note">For this Acode demo, the API key is saved in this browser's local storage. Do not use a secret production key in a public app. A production APK should use a secure backend.</p>
+    </section>
+  </div>
+
+  <div class="overlay" id="historyOverlay" hidden>
+    <section class="settings-panel history-panel" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+      <div class="panel-heading"><div><p class="eyebrow">YOUR CHATS</p><h2 id="historyTitle">Conversation history</h2></div><button class="icon-button" id="closeHistory" aria-label="Close history">×</button></div>
+      <input id="historySearch" class="field" type="search" placeholder="Search chats…" /><div id="historyList" class="history-list"></div>
+      <button class="primary-button full-button" id="newChatBtn">＋ New chat</button>
+      <button class="secondary-button full-button" id="exportBtn" style="margin-top:8px;min-height:44px">Export this chat</button>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
